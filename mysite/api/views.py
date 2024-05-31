@@ -8,17 +8,17 @@ def say_hello(request):
     return render(request, 'hello.html',{'name': 'Baibhav'})
 
 
-@api_view(['GET'])
-def d_page(request):
-    return render(request, 'addition.html')
+# @api_view(['GET'])
+# def d_page(request):
+#     return render(request, 'addition.html')
 
-@api_view(['GET'])
-def add_num(request):
-    val1 =  int(request.GET["num1"])
-    val2 =  int(request.GET["num2"])
-    val3 = val1+val2
-    r = {"result": val3}
-    return Response(r)
+# @api_view(['GET'])
+# def add_num(request):
+#     val1 =  int(request.GET["num1"])
+#     val2 =  int(request.GET["num2"])
+#     val3 = val1+val2
+#     r = {"result": val3}
+#     return Response(r)
 
 @api_view(['GET'])
 def apiOverview(request):
@@ -33,20 +33,19 @@ def apiOverview(request):
     return Response(api_urls)
 
 
-@api_view(['GET'])
-def get_param(request, pk):
+# @api_view(['GET'])
+def taskRead(request, pk):
     task = Task.objects.get(id=pk)
     serializer = TaskSerializer(task, many=False)
     return Response(serializer.data)
 
 
-@api_view(['GET'])
+# @api_view(['GET'])
 def taskList(request):
     tasks = Task.objects.all()
     serializer = TaskSerializer(tasks, many=True)
     return Response(serializer.data)
 
-@api_view(['POST'])
 def taskCreate(request):
 	serializer = TaskSerializer(data=request.data)
 
@@ -55,7 +54,6 @@ def taskCreate(request):
 
 	return Response(serializer.data)
 
-@api_view(['POST'])
 def taskUpdate(request, pk):
 	task = Task.objects.get(id=pk)
 	serializer = TaskSerializer(instance=task, data=request.data)
@@ -65,13 +63,28 @@ def taskUpdate(request, pk):
 
 	return Response(serializer.data)
 
-@api_view(['DELETE'])
+# @api_view(['DELETE'])
 def taskDelete(request, pk):
     task = Task.objects.get(id=pk)
     task.delete()
     return Response("Item successfully deleted")
 
+@api_view(['GET', 'DELETE', 'POST'])
+def task_pk(request, pk):
+    if request.method == 'GET': 
+         return taskRead(request, pk)
+    elif request.method == 'POST':
+         return taskUpdate(request, pk)
+    elif request.method == 'DELETE':
+         return taskDelete(request, pk)
+         
 
-
+@api_view(['GET', 'POST'])
+def task(request):
+    if request.method == 'GET': 
+         return taskList(request)
+    elif request.method == 'POST':
+         return taskCreate(request)
+   
 
 
