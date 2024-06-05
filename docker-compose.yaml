@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  database:
+    build: .
+    ports:
+      - "3306:3306"
+
+  web:
+    build: ./mysite
+    # container_name: mysite_backend
+    command: sh -c "python3 manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"
+    # restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database

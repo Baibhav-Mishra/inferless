@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -23,7 +27,7 @@ SECRET_KEY = "django-insecure-5h9z+@@j+7979o0o5-guemfep$=vw!toq0f0as4k8bted(wsx1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -86,7 +90,7 @@ DATABASES = {
         'NAME': 'my_database',  
         'USER': 'root',  
         'PASSWORD': 'pass',  
-        'HOST': '0.0.0.0',  
+        'HOST': 'database',  
         'PORT': '3306',  
         'OPTIONS': {  
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"  
