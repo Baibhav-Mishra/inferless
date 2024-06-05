@@ -4,6 +4,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import TaskSerializer
 from .models import Task
+
+
 def say_hello(request):
     return render(request, 'hello.html',{'name': 'Baibhav'})
 
@@ -21,7 +23,7 @@ def say_hello(request):
 #     return Response(r)
 
 @api_view(['GET'])
-def apiOverview(request):
+def api_overview(request):
     api_urls = {
         'Overview': '/task-overview/',
         'Create': '/task-create/',
@@ -34,7 +36,7 @@ def apiOverview(request):
 
 
 # @api_view(['GET'])
-def taskRead(request, pk):
+def task_read(request, pk):
     task = Task.objects.get(id=pk)
     serializer = TaskSerializer(task, many=False)
     return Response(serializer.data)
@@ -46,7 +48,7 @@ def taskList(request):
     serializer = TaskSerializer(tasks, many=True)
     return Response(serializer.data)
 
-def taskCreate(request):
+def task_create(request):
 	serializer = TaskSerializer(data=request.data)
 
 	if serializer.is_valid():
@@ -54,7 +56,7 @@ def taskCreate(request):
 
 	return Response(serializer.data)
 
-def taskUpdate(request, pk):
+def task_update(request, pk):
 	task = Task.objects.get(id=pk)
 	serializer = TaskSerializer(instance=task, data=request.data)
 
@@ -64,7 +66,7 @@ def taskUpdate(request, pk):
 	return Response(serializer.data)
 
 # @api_view(['DELETE'])
-def taskDelete(request, pk):
+def task_delete(request, pk):
     task = Task.objects.get(id=pk)
     task.delete()
     return Response("Item successfully deleted")
@@ -72,11 +74,11 @@ def taskDelete(request, pk):
 @api_view(['GET', 'DELETE', 'POST'])
 def task_pk(request, pk):
     if request.method == 'GET': 
-         return taskRead(request, pk)
+         return task_read(request, pk)
     elif request.method == 'POST':
-         return taskUpdate(request, pk)
+         return task_update(request, pk)
     elif request.method == 'DELETE':
-         return taskDelete(request, pk)
+         return task_delete(request, pk)
          
 
 @api_view(['GET', 'POST'])
@@ -84,7 +86,7 @@ def task(request):
     if request.method == 'GET': 
          return taskList(request)
     elif request.method == 'POST':
-         return taskCreate(request)
+         return task_create(request)
    
 
 
