@@ -4,8 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import TaskSerializer
 from .models import Task
-
-
+from .const import *
 def say_hello(request):
     return render(request, 'hello.html',{'name': 'Baibhav'})
 
@@ -71,17 +70,17 @@ def task_delete(request, pk):
     task.delete()
     return Response("Item successfully deleted")
 
-@api_view(['GET', 'DELETE', 'POST'])
+@api_view(['GET', DELETE, 'POST'])
 def task_pk(request, pk):
     if request.method == 'GET': 
          return task_read(request, pk)
     elif request.method == 'POST':
          return task_update(request, pk)
-    elif request.method == 'DELETE':
+    elif request.method == DELETE:
          return task_delete(request, pk)
          
 
-@api_view(['GET', 'POST'])
+@api_view([GET, POST])
 def task(request):
     if request.method == 'GET': 
          return taskList(request)
